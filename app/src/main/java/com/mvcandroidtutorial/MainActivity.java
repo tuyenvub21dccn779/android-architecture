@@ -14,11 +14,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoginInterface{
 
     private EditText editEmail, editPassword;
     private TextView tvMessage;
     private Button btnLogin;
+
+    private LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        mLoginPresenter = new LoginPresenter(this);
 
         editEmail = findViewById(R.id.edit_email);
         editPassword = findViewById(R.id.edit_password);
@@ -49,15 +53,21 @@ public class MainActivity extends AppCompatActivity {
         String strPassword = editPassword.getText().toString().trim();
 
         User user = new User(strEmail, strPassword);
+        mLoginPresenter.login(user);
+    }
+
+    @Override
+    public void loginSuccess() {
         tvMessage.setVisibility(View.VISIBLE);
-        if (user.isValidEmail() && user.isValidPassword()) {
-            tvMessage.setText("Login success");
-            tvMessage.setTextColor(getResources().getColor(R.color.teal_200));
+        tvMessage.setText("Login success");
+        tvMessage.setTextColor(getResources().getColor(R.color.teal_200));
 
-        } else {
-            tvMessage.setText("Email or Password invalid");
-            tvMessage.setTextColor(Color.RED);
+    }
 
-        }
+    @Override
+    public void loginError() {
+        tvMessage.setVisibility(View.VISIBLE);
+        tvMessage.setText("Email or Password invalid");
+        tvMessage.setTextColor(Color.RED);
     }
 }
