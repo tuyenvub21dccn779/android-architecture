@@ -14,13 +14,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity implements LoginInterface{
+public class MainActivity extends AppCompatActivity {
 
     private EditText editEmail, editPassword;
     private TextView tvMessage;
     private Button btnLogin;
 
-    private LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements LoginInterface{
             return insets;
         });
 
-        mLoginPresenter = new LoginPresenter(this);
 
         editEmail = findViewById(R.id.edit_email);
         editPassword = findViewById(R.id.edit_password);
@@ -53,21 +51,6 @@ public class MainActivity extends AppCompatActivity implements LoginInterface{
         String strPassword = editPassword.getText().toString().trim();
 
         User user = new User(strEmail, strPassword);
-        mLoginPresenter.login(user);
     }
 
-    @Override
-    public void loginSuccess() {
-        tvMessage.setVisibility(View.VISIBLE);
-        tvMessage.setText("Login success");
-        tvMessage.setTextColor(getResources().getColor(R.color.teal_200));
-
-    }
-
-    @Override
-    public void loginError() {
-        tvMessage.setVisibility(View.VISIBLE);
-        tvMessage.setText("Email or Password invalid");
-        tvMessage.setTextColor(Color.RED);
-    }
 }
